@@ -1,0 +1,24 @@
+// Hook the function to the 'wp_insert_post_data' filter.
+add_filter('wp_insert_post_data', 'remove_divs_span', 99);
+
+/**
+ * Remove div and Span Class
+ * 
+ * @param array $data The array of post data.
+ * @return array Modified post data without div and span tags.
+ */
+function remove_divs_span($data) {
+    // This regex pattern matches opening and closing div tags.
+    $divPattern = '/<div.*?>|<\/div>/';
+    // This regex pattern matches opening and closing span tags.
+    $spanPattern = '/<span.*?>|<\/span>/';
+
+    // Remove div and span tags from the post content.
+    $filteredContent = preg_replace($divPattern, '', $data['post_content']);
+    $filteredContent = preg_replace($spanPattern, '', $filteredContent);
+
+    // Update the post content without div and span tags.
+    $data['post_content'] = $filteredContent;
+
+    return $data;
+}
